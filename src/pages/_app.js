@@ -1,8 +1,8 @@
 import "bootstrap/dist/css/bootstrap.css"
-typeof window !== `undefined` && import("bootstrap/dist/js/bootstrap")
-typeof window !== `undefined` && import("@fortawesome/fontawesome-free/js/brands")
-typeof window !== `undefined` && import("@fortawesome/fontawesome-free/js/solid")
-typeof window !== `undefined` && import("@fortawesome/fontawesome-free/js/fontawesome")
+import("bootstrap/dist/js/bootstrap")
+import("@fortawesome/fontawesome-free/js/brands")
+import("@fortawesome/fontawesome-free/js/solid")
+import("@fortawesome/fontawesome-free/js/fontawesome")
 
 function MyApp({ Component, pageProps }) {
   return (
