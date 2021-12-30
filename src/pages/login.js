@@ -1,9 +1,35 @@
 import Link from "next/link";
 import Layout from "../components/layout";
+import {signInWithEmailAndPassword,signOut } from "firebase/auth";
+import { useForm } from "../components/hooks/useForm";
+import { auth } from "../../firebase";
+import { useRouter } from "next/router";
 
+const initForm={
+    email:"",
+    password:""
+}
 export default function Login(){
-    const login=(e)=>{
+    const {handleChange,form}=useForm(initForm);
+    const {push}=useRouter();
+    const login=async(e)=>{
         e.preventDefault();
+        try{
+            
+            const userCredential=await signInWithEmailAndPassword(auth,form.email,form.password);
+            console.log("credenciales ",userCredential);
+            push("/user");
+
+        }catch(err){
+            console.log("Ha ocurrido un error al logearse");
+        }
+    }
+    const logout=async()=>{
+        try{
+            await signOut(auth);
+        }catch(err){
+            console.log("error al logout ",err);
+        }
     }
     return(
         <Layout>
@@ -17,11 +43,12 @@ export default function Login(){
                 </span>
                 </article>
                 
-                <article><input placeholder="Correo electrónico" type="email"/></article>
-                <article><input placeholder="Contraseña" type="password"/></article>
+                <article><input placeholder="Correo electrónico" onChange={handleChange} name="email" value={form.email} type="email"/></article>
+                <article><input placeholder="Contraseña" onChange={handleChange} name="password" value={form.password} type="password"/></article>
                 <article className="block-center" >
                     <button type="submit" className="btn btn-primary" >Iniciar sesión</button>
                 </article>
+                
                 <article className="block-center" >
                     <Link href="/register" >
                         <a>

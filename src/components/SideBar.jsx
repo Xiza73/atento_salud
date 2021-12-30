@@ -1,4 +1,17 @@
+import { signOut } from "@firebase/auth";
+import { useRouter } from "next/router";
+import { auth } from "../../firebase";
+
 const Sidebar = () => {
+  const {push}=useRouter();
+  const logout=async()=>{
+        try{
+            await signOut(auth);
+            push("/login");
+        }catch(err){
+            console.log("error al logout ",err);
+        }
+    }
   return (
     <>
       <div className="sidebar-content container-fluid text-center">
@@ -10,7 +23,7 @@ const Sidebar = () => {
         <p>Configuración</p>
         <p>Preguntas frecuentes</p>
         <p>Familiares asegurados</p>
-        <button className="btn btn-dark">Cerrar Sesión</button>
+        <button onClick={logout} className="btn btn-dark">Cerrar Sesión</button>
       </div>
 
       <style jsx>

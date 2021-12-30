@@ -1,10 +1,37 @@
 import Image from "next/image";
+import { createUserWithEmailAndPassword,onAuthStateChanged } from "firebase/auth";
 import Layout from "../components/layout";
-
+import Link from "next/link";
+import { useForm } from "../components/hooks/useForm";
+import { auth } from "../../firebase";
+import { useEffect } from "react";
+const initForm={
+    codAsegurado:"",
+    dni:"",
+    address:"",
+    email:"",
+    password:""
+}
 export default function Register(){
-    const register=(e)=>{
+    const {handleChange,form}=useForm(initForm);
+    useEffect(()=>{
+        onAuthStateChanged(auth,(user)=>{
+            if(user){
+                console.log("logeado ",user);
+            }else{
+                console.log("no logeado");
+            }
+        })
+    },[])
+    const register=async(e)=>{
         e.preventDefault();
-        //logica para registro y envio de formulario
+        try{
+            const userCredential=await createUserWithEmailAndPassword(auth,form.email,form.password);
+            console.log(userCredential.user);
+        }catch(err){
+            console.log("error ocurrido al registrarse ",err);
+        }
+
     }
     return(
         <Layout>
@@ -18,16 +45,23 @@ export default function Register(){
                 </span>
                 </article>
                 <article>
-                    <input placeholder="Código de asegurado" type="number"/>
+                    <input onChange={handleChange} name="codAsegurado" value={form.codAsegurado}  placeholder="Código de asegurado" type="number"/>
                 </article>
                 <article>
-                    <input placeholder="DNI" type="number" />
+                    <input onChange={handleChange} name="dni" value={form.dni} placeholder="DNI" type="number" />
                 </article>
-                <article><input placeholder="Dirección actual" type="text"/></article>
-                <article><input placeholder="Correo electrónico" type="email"/></article>
-                <article><input placeholder="Contraseña" type="password"/></article>
+                <article><input onChange={handleChange} value={form.address} name="address" placeholder="Dirección actual" type="text"/></article>
+                <article><input placeholder="Correo electrónico" onChange={handleChange} value={form.email} name="email" type="email"/></article>
+                <article><input placeholder="Contraseña" onChange={handleChange} value={form.password} name="password" type="password"/></article>
                 <article className="block-center" >
                     <button type="submit" className="btn btn-primary" >Registrarse</button>
+                </article>
+                <article className="block-center" >
+                    <Link href="/login" >
+                    <a>
+                        ¿Ya posees una cuenta? Inicia sesión ahora!
+                    </a>
+                    </Link>
                 </article>
             </form>
         </section>
