@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Layout from "../components/layout";
 
 export default function Register(){
     const register=(e)=>{
@@ -6,6 +7,8 @@ export default function Register(){
         //logica para registro y envio de formulario
     }
     return(
+        <Layout>
+
         <section>
             <form onSubmit={register} >
                 <article className="block-center" ><h1>Registro de usuarios</h1>
@@ -27,6 +30,7 @@ export default function Register(){
                     <button type="submit" className="btn btn-primary" >Registrarse</button>
                 </article>
             </form>
+        </section>
         <style jsx>{`
         .block-center{
             
@@ -70,6 +74,6 @@ export default function Register(){
             align-items:center;
         }
         `}</style>
-        </section>
+        </Layout>
     )
 }
