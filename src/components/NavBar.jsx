@@ -1,4 +1,7 @@
+import { useRouter } from "next/router";
+
 const Navbar = () => {
+  const {push}=useRouter();
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -36,8 +39,8 @@ const Navbar = () => {
               </li>
             </ul>
             <div className="navbar-text">
-              <button className="btn btn-danger me-3">Iniciar Sesión</button>
-              <button className="btn btn-danger">Registrate</button>
+              <button onClick={()=>push("/login")} className="btn btn-danger me-3">Iniciar Sesión</button>
+              <button onClick={()=>push("/register")} className="btn btn-danger">Registrate</button>
             </div>
           </div>
         </div>
