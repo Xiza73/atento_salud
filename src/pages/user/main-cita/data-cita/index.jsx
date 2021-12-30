@@ -1,6 +1,21 @@
+import { onAuthStateChanged } from "@firebase/auth";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { auth } from "../../../../../firebase";
 import Sidebar from "../../../../components/SideBar";
 
 export default function DataCita() {
+  const {push}=useRouter();
+  useEffect(()=>{
+    onAuthStateChanged(auth,(user)=>{
+      if(user){
+        console.log("usuario logeado");
+      }else{
+        console.log("usuario no logeado ");
+        push("/login");
+      }
+    })
+  },[]);
   return (
     <>
       <div className="user-content">

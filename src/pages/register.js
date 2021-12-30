@@ -1,23 +1,27 @@
 import Image from "next/image";
-import { createUserWithEmailAndPassword,onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword,onAuthStateChanged,updateProfile } from "firebase/auth";
 import Layout from "../components/layout";
 import Link from "next/link";
 import { useForm } from "../components/hooks/useForm";
 import { auth } from "../../firebase";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 const initForm={
     codAsegurado:"",
     dni:"",
     address:"",
+    names:"",
     email:"",
     password:""
 }
 export default function Register(){
     const {handleChange,form}=useForm(initForm);
+    const {push}=useRouter();
     useEffect(()=>{
         onAuthStateChanged(auth,(user)=>{
             if(user){
                 console.log("logeado ",user);
+                push("/user/main");
             }else{
                 console.log("no logeado");
             }
@@ -28,6 +32,8 @@ export default function Register(){
         try{
             const userCredential=await createUserWithEmailAndPassword(auth,form.email,form.password);
             console.log(userCredential.user);
+            await updateProfile(auth.currentUser,{displayName:form.names});
+            push("/login");
         }catch(err){
             console.log("error ocurrido al registrarse ",err);
         }
@@ -45,12 +51,13 @@ export default function Register(){
                 </span>
                 </article>
                 <article>
-                    <input onChange={handleChange} name="codAsegurado" value={form.codAsegurado}  placeholder="Código de asegurado" type="number"/>
+                    <input onChange={handleChange} name="codAsegurado" value={form.codAsegurado}  placeholder="Código de asegurado" type="text"/>
                 </article>
                 <article>
                     <input onChange={handleChange} name="dni" value={form.dni} placeholder="DNI" type="number" />
                 </article>
                 <article><input onChange={handleChange} value={form.address} name="address" placeholder="Dirección actual" type="text"/></article>
+                <article><input placeholder="Nombres" onChange={handleChange} value={form.names} name="names" type="text"/></article>
                 <article><input placeholder="Correo electrónico" onChange={handleChange} value={form.email} name="email" type="email"/></article>
                 <article><input placeholder="Contraseña" onChange={handleChange} value={form.password} name="password" type="password"/></article>
                 <article className="block-center" >
@@ -66,6 +73,9 @@ export default function Register(){
             </form>
         </section>
         <style jsx>{`
+        a{
+            text-decoration:none;
+        }
         .block-center{
             
             justify-content:center;

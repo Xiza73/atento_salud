@@ -1,6 +1,21 @@
+import { onAuthStateChanged } from "@firebase/auth";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { auth } from "../../../../firebase";
 import Sidebar from "../../../components/SideBar";
 
 export default function MainCita() {
+  const {push}=useRouter();
+  useEffect(()=>{
+    onAuthStateChanged(auth,(user)=>{
+      if(user){
+        console.log("ususario logeado");
+      }else{
+        console.log("usuario nomlogeado");
+        push("/login");
+      }
+    })
+  })
   return (
     <>
       <div className="user-content">
@@ -12,7 +27,7 @@ export default function MainCita() {
               <i className="fas fa-stethoscope"></i>
             </h1>
             <div className="buttons w-100 d-flex justify-content-between align-items-center">
-              <button className="btn btn-dark">Programar citas</button>
+              <button onClick={()=>push("/user/main-cita/data-cita")}  className="btn btn-dark">Programar citas</button>
               <button className="btn btn-dark">Mis citas</button>
             </div>
           </div>

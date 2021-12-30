@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Layout from "../components/layout";
-import {signInWithEmailAndPassword,signOut } from "firebase/auth";
+import {signInWithEmailAndPassword,onAuthStateChanged } from "firebase/auth";
 import { useForm } from "../components/hooks/useForm";
 import { auth } from "../../firebase";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const initForm={
     email:"",
@@ -12,25 +13,30 @@ const initForm={
 export default function Login(){
     const {handleChange,form}=useForm(initForm);
     const {push}=useRouter();
+    useEffect(()=>{
+
+        onAuthStateChanged(auth,(user)=>{
+            if(user){
+                console.log("usuario logeado redirect to /user ");
+                push("/user/main");
+            }else{
+                console.log("usuario no logeado");
+            }
+        });
+    },[]);
     const login=async(e)=>{
         e.preventDefault();
         try{
             
             const userCredential=await signInWithEmailAndPassword(auth,form.email,form.password);
             console.log("credenciales ",userCredential);
-            push("/user");
+            push("/user/main");
 
         }catch(err){
             console.log("Ha ocurrido un error al logearse");
         }
     }
-    const logout=async()=>{
-        try{
-            await signOut(auth);
-        }catch(err){
-            console.log("error al logout ",err);
-        }
-    }
+    
     return(
         <Layout>
 
