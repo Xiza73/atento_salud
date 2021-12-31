@@ -17,7 +17,7 @@ export default function PacientesAtender() {
                 aria-describedby="button-addon2"
               />
               <button className="btn btn-dark" type="button" id="button-addon2">
-                <i class="fas fa-search"></i>
+                <i className="fas fa-search"></i>
               </button>
             </div>
             <table className="table table-dark table-striped">
