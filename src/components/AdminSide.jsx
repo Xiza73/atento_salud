@@ -1,11 +1,16 @@
+import { useRouter } from "next/router";
+
 const Sidebar = () => {
+  const {push}=useRouter();
   return (
     <>
       <div className="sidebar-content container-fluid text-center">
         <i className="ficon fas fa-bars"></i>
         <div className="icons">
           <i className="fas fa-home"></i>
+          <span onClick={()=>push("/admin/tables")}  >
           <i className="fas fa-border-all"></i>
+          </span>
           <i className="fas fa-cog"></i>
           <i className="fas fa-question-circle"></i>
         </div>
@@ -14,6 +19,7 @@ const Sidebar = () => {
 
       <style jsx>
         {`
+        
           .img {
             background-image: url("https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png");
             background-repeat: no-repeat;
@@ -46,6 +52,9 @@ const Sidebar = () => {
               color: white;
               width: 2.6rem !important;
               height: auto !important;
+          }
+          span{
+          cursor:pointer;
           }
         `}
       </style>
