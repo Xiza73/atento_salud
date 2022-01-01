@@ -1,0 +1,42 @@
+const mongoose=require("mongoose");
+const pacienteSchema=new mongoose.Schema({
+    codAsegurado:{
+        type:String,
+        trim:true,
+        required:true
+    },
+    fecha:{
+        type:String,
+        trim:true,
+        required:true
+    },
+    hora:{
+        type:String,
+        trim:true,
+        required:true
+    },
+    mes:{
+        type:String,
+        trim:true,
+        required:true
+    },
+    year:{
+        type:String,
+        trim:true,
+        required:true
+    },
+    codEnfermedad:{
+        type:String,
+        trim:true,
+        required:true
+    },
+    doctor:{
+        type:String,
+        trim:true,
+        required:true
+    }
+},{
+    timestamps:true,
+    versionKey:false
+});
+module.exports=mongoose.models.PacienteModel || mongoose.model("PacienteModel",pacienteSchema);
