@@ -1,13 +1,29 @@
+import { useEffect, useState } from "react";
 import { useForm } from "../../../components/hooks/useForm";
 import LayoutAdmin from "../../../components/layout/LayoutAdmin";
 
-export default function AgregarCama({pacientes}){
+export default function AgregarCama(){
     const {form,handleChange,setForm}=useForm({
         codeCama:"",
         estadoCama:false,
         nombrePaciente:""
-    })
-    console.log("form ",form);
+    });
+    const [pacientes,setPacientes]=useState([]);
+    const fetchData=async()=>{
+        try{
+        const response=await fetch("https://atento-salud.vercel.app/api/paciente");
+        const pacientes=await response.json();
+        console.log("pacientes ",pacientes);
+        setPacientes(pacientes);
+        
+    }catch(err){
+        console.log("error ",err);
+        
+    }
+    }
+    useEffect(()=>{
+        fetchData();
+    },[])
     const addCama=async(e)=>{
         e.preventDefault();
         try{
@@ -97,7 +113,7 @@ export default function AgregarCama({pacientes}){
         </LayoutAdmin>
     )
 }
-export async function getServerSideProps(){
+/*export async function getServerSideProps(){
     try{
         const response=await fetch("https://atento-salud.vercel.app/api/paciente");
         const pacientes=await response.json();
@@ -116,4 +132,4 @@ export async function getServerSideProps(){
             }
         }
     }
-}
+}*/

@@ -1,7 +1,24 @@
+import { useEffect, useState } from "react";
 import Adminside from "../../../components/AdminSide";
 import LayoutAdmin from "../../../components/layout/LayoutAdmin";
 
-export default function Camas({camas}) {
+export default function Camas() {
+  const [camas,setCamas]=useState([]);
+  const fetchData=async()=>{
+    try{
+    const response=await fetch("https://atento-salud.vercel.app/api/cama");
+    const camas=await response.json();
+    setCamas(camas);
+    console.log("repsonse ",camas);
+    
+  }catch(err){
+    console.log("error ",err);
+    
+  }
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
   
     <LayoutAdmin>
@@ -67,7 +84,7 @@ export default function Camas({camas}) {
      
   );
 }
-export async function getServerSideProps(){
+/*export async function getServerSideProps(){
   try{
     const response=await fetch("https://atento-salud.vercel.app/api/cama");
     const camas=await response.json();
@@ -86,4 +103,4 @@ export async function getServerSideProps(){
       }
     }
   }
-}
+}*/

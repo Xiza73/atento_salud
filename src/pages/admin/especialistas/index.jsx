@@ -1,7 +1,22 @@
-import Adminside from "../../../components/AdminSide";
+import { useEffect, useState } from "react";
 import LayoutAdmin from "../../../components/layout/LayoutAdmin";
 
-export default function Especialistas({doctores}) {
+export default function Especialistas() {
+  const [doctores, setDoctores] = useState([]);
+  const fetchData=async()=>{
+    try{
+    const response=await fetch("https://atento-salud.vercel.app/api/doctor");
+    const doctors=await response.json();
+    console.log(doctors);
+    setDoctores(doctors);
+  }catch(err){
+    console.log("error ",err);
+    
+  }
+  }
+  useEffect(()=>{
+    fetchData();
+  },[]);
   return (
     <LayoutAdmin>
       <section>
@@ -85,7 +100,7 @@ export default function Especialistas({doctores}) {
      
   );
 }
-export async function getServerSideProps(){
+/*export async function getServerSideProps(){
   try{
     const response=await fetch("https://atento-salud.vercel.app/api/doctor");
     const doctores=await response.json();
@@ -103,4 +118,4 @@ export async function getServerSideProps(){
       }
     }
   }
-} 
+} */

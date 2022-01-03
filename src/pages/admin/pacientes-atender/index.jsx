@@ -1,6 +1,22 @@
+import { useEffect, useState } from "react";
 import LayoutAdmin from "../../../components/layout/LayoutAdmin";
 
-export default function PacientesAtender({pacientes}) {
+export default function PacientesAtender() {
+  const [pacientes, setPacientes] = useState([]);
+  const fetchData=async()=>{
+    try{
+    const response=await fetch("https://atento-salud.vercel.app/api/paciente");
+    const pacientes=await response.json();
+    console.log(pacientes);
+      setPacientes(pacientes);
+  }catch(err){
+    console.log("error ",err);
+    
+  }
+  }
+  useEffect(()=>{
+    fetchData();
+  },[]);
   return (
   
     <LayoutAdmin>
@@ -77,7 +93,7 @@ export default function PacientesAtender({pacientes}) {
       
   );
 }
-export async function getServerSideProps(){
+/*export async function getServerSideProps(){
   try{
     const response=await fetch("https://atento-salud.vercel.app/api/paciente");
     const pacientes=await response.json();
@@ -95,4 +111,4 @@ export async function getServerSideProps(){
       }
     }
   }
-}
+}*/

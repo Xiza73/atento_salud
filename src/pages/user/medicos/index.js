@@ -1,6 +1,21 @@
+import { useEffect, useState } from "react";
 import LayoutUser from "../../../components/layout/LayoutUser";
 
-export default function Medicos({doctores}){
+export default function Medicos(){
+    const[doctores,setDoctores]=useState([]);
+    const fetchData=async()=>{
+        try{
+    const response=await fetch("https://atento-salud.vercel.app/api/doctor");
+    const doctores=await response.json();
+    setDoctores(doctores);
+  }catch(err){
+    console.log("error ",err);
+    
+  }
+    }
+    useEffect(()=>{
+        fetchData();
+    },[]);
     return(
         <LayoutUser>
             <div className="admin-main">
@@ -74,7 +89,7 @@ export default function Medicos({doctores}){
         </LayoutUser>
     )
 }
-export async function getServerSideProps(){
+/*export async function getServerSideProps(){
     try{
     const response=await fetch("https://atento-salud.vercel.app/api/doctor");
     const doctores=await response.json();
@@ -92,4 +107,4 @@ export async function getServerSideProps(){
       }
     }
   }
-}
+}*/

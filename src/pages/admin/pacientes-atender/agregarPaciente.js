@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
 import { useForm } from "../../../components/hooks/useForm";
 import LayoutAdmin from "../../../components/layout/LayoutAdmin";
 
-export default function AgregarPaciente({asegurados,enfermedades,doctores}){
+export default function AgregarPaciente(){
+    const [asegurados,setAsegurados]=useState([]);
+    const [enfermedades,setEnfermedades]=useState([]);
+    const [doctores,setDoctores]=useState([]);
     const {form,setForm,handleChange}=useForm({
         fecha:"",
         hora:"",
@@ -28,6 +32,26 @@ export default function AgregarPaciente({asegurados,enfermedades,doctores}){
             console.log("error ",err);
         }
     }
+    const fetchData=async()=>{
+        try{
+        const response=await fetch("https://atento-salud.vercel.app/api/user/asegurados");
+        const asegurados=await response.json();
+        const responseEnfermedad=await fetch("https://atento-salud.vercel.app/api/enfermedad");
+        const enfermedades=await responseEnfermedad.json();
+        const responseDoctor=await fetch("https://atento-salud.vercel.app/api/doctor");
+        const doctores=await responseDoctor.json();
+        setAsegurados(asegurados);
+        setEnfermedades(enfermedades);
+        setDoctores(doctores);
+       
+    }catch(err){
+        console.log("error ",err);
+        
+    }
+    }
+    useEffect(()=>{
+        fetchData();
+    },[]);
     return(
         <LayoutAdmin>
             <section>
@@ -116,7 +140,7 @@ export default function AgregarPaciente({asegurados,enfermedades,doctores}){
         </LayoutAdmin>
     )
 }
-export async function getServerSideProps(){
+/*export async function getServerSideProps(){
     try{
         const response=await fetch("https://atento-salud.vercel.app/api/user/asegurados");
         const asegurados=await response.json();
@@ -140,4 +164,4 @@ export async function getServerSideProps(){
             }
         }
     }
-}
+}*/

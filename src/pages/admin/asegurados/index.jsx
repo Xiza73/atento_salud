@@ -1,7 +1,21 @@
+import { useState } from "react";
 import Adminside from "../../../components/AdminSide";
 import LayoutAdmin from "../../../components/layout/LayoutAdmin";
 
-export default function Asegurados({users}) {
+export default function Asegurados() {
+  const [users,setUsers]=useState([]);
+  const fetchData=async()=>{
+    try{
+    const response=await fetch("https://atento-salud.vercel.app/api/user");
+    const users=await response.json();
+    setUsers(users);
+  }catch(err){
+    console.log("error ",err);
+  }
+  }
+  useEffect(()=>{
+    fetchData();
+  },[])
   return (
     <LayoutAdmin>
       <section>
@@ -59,7 +73,7 @@ export default function Asegurados({users}) {
     </LayoutAdmin>
   );
 }
-export async function getServerSideProps(){
+/*export async function getServerSideProps(){
   try{
     const response=await fetch("https://atento-salud.vercel.app/api/user");
     const users=await response.json();
@@ -76,4 +90,4 @@ export async function getServerSideProps(){
       }
     }
   }
-}
+}*/
