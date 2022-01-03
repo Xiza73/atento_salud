@@ -1,9 +1,9 @@
 const mongoose=require("mongoose");
+const {ObjectId}=mongoose.Schema;
 const pacienteSchema=new mongoose.Schema({
     codAsegurado:{
-        type:String,
-        trim:true,
-        required:true
+        type:ObjectId,
+        ref:"UserModel"
     },
     fecha:{
         type:String,
@@ -26,17 +26,15 @@ const pacienteSchema=new mongoose.Schema({
         required:true
     },
     codEnfermedad:{
-        type:String,
-        trim:true,
-        required:true
+        type:ObjectId,
+        ref:"EnfermedadModel"
     },
     doctor:{
-        type:String,
-        trim:true,
-        required:true
+        type:ObjectId,
+        ref:"DoctorModel"
     }
 },{
     timestamps:true,
     versionKey:false
 });
-module.exports=mongoose.models.PacienteModel || mongoose.model("PacienteModel",pacienteSchema);
+module.exports= mongoose.models.PacienteMdModel || mongoose.model("PacienteMdModel",pacienteSchema);

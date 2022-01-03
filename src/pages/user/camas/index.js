@@ -1,12 +1,9 @@
-import Adminside from "../../../components/AdminSide";
-import LayoutAdmin from "../../../components/layout/LayoutAdmin";
+import LayoutUser from "../../../components/layout/LayoutUser";
 
-export default function Camas({camas}) {
-  return (
-  
-    <LayoutAdmin>
-
-        <div className="admin-main">
+export default function Camas({camas}){
+    return(
+        <LayoutUser>
+            <div className="admin-main">
           <div className="d-flex w-100 flex-column justify-content-center align-items-center">
             <h1 className="mb-3">Camas para internarse</h1>
             <div className="input-group px-5 mb-5">
@@ -25,50 +22,37 @@ export default function Camas({camas}) {
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Nombre del paciente</th>
+                  <th scope="col">Fecha de inicio de uso</th>
                   <th scope="col">Código de la cama</th>
                   <th scope="col">Disponibilidad</th>
-                  <th scope="col">Acciones</th>
+                  
                 </tr>
               </thead>
               <tbody>
                 {camas.map((cama,index)=>(
                   <tr key={cama._id} >
                       <th scope="row" >{index+1}</th>
-                      <td>{cama.nombrePaciente.codAsegurado}</td>
+                      <td>{cama.nombrePaciente.fecha}</td>
                       <td>{cama.codeCama}</td>
                       <td>{cama.estadoCama?"Ocupada":"Libre"}</td>
-                      <td>
-                        <button>
-                          <i className="fas fa-edit" ></i>
-                        </button>
-                        <button>
-                          <i className="fas fa-trash-alt" ></i>
-                        </button>
-                      </td>
+                      
                   </tr>
                 ))}
-                
+               
               </tbody>
             </table>
           </div>
         </div>
-        <style jsx>{`
-        td>button{
-          background-color:transparent;
-          color:white;
-          border:0;
-        }
-        .admin-main{
-          padding:1rem;
-        }
-        `}</style>
-    </LayoutAdmin>
-     
-  );
+            <style jsx>{`
+            .admin-main{
+                padding:1rem;
+            }
+            `}</style>
+        </LayoutUser>
+    )
 }
 export async function getServerSideProps(){
-  try{
+    try{
     const response=await fetch("https://atento-salud.vercel.app/api/cama");
     const camas=await response.json();
     console.log("repsonse ",camas);
@@ -81,7 +65,7 @@ export async function getServerSideProps(){
     console.log("error ",err);
     return{
       props:{
-        error:err,
+        error:true,
         message:"Ha ocurrido un error durante el SSR "
       }
     }

@@ -2,18 +2,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const Sidebar = () => {
-  const {push,pathname}=useRouter();
-  const [option,setOption]=useState({
+export default function UserSide(){
+    const {pathname}=useRouter();
+    const [option,setOption]=useState({
     pacientes:false,
     camas:false,
     medicos:false,
     usuarios:false,
     enfermedades:false
   });
-  console.log("path ",pathname.split("/").pop());
-  return (
-    <>
+    return(
+         <>
       <div className="adminSide-block" >
         <header>
           <h1>Atento Salud</h1>
@@ -25,7 +24,7 @@ const Sidebar = () => {
           </span>
           <div className="profile-info-block" >
             <p>Nombres Apellidos</p>
-            <p>Administrador</p>
+            <p>Asegurado</p>
           </div>
           <span>
             <i className="fas fa-sort-down" />
@@ -39,8 +38,8 @@ const Sidebar = () => {
             <ul>
               <li>
                 <div className="dropdown-block" >
-                  <Link href="/admin" passHref >
-                  <div className={`dropdown-title-element ${pathname.split("/").pop()==="admin" && "element-active"}`} >
+                  <Link href="/user/main" passHref >
+                  <div className={`dropdown-title-element ${pathname.split("/").pop()==="main" && "element-active"}`} >
                       <span>
                         <i className="fas fa-home" ></i>
                       </span>
@@ -52,40 +51,10 @@ const Sidebar = () => {
                   </Link>
                 </div>
               </li>
+              
               <li>
                 <div className="dropdown-block" >
-                  <div onClick={()=>!option.pacientes ? setOption({...option,pacientes:true}) : setOption({...option,pacientes:false})} className={`dropdown-title-element ${(pathname.split("/").pop()==="pacientes-atender" || pathname.split("/").pop()==="agregarPaciente" ) && "element-active"}`} >
-                      <span>
-                        <i className="fas fa-user-injured" ></i>
-                      </span>
-                      <p>Pacientes</p>
-                      <span className={option.pacientes && `active-icon`} >
-                        <i className="fas fa-sort-down " ></i>
-                      </span>
-                  </div>
-                  {option.pacientes && <>
-                  <Link href="/admin/pacientes-atender" passHref >
-                  <div className="dropdown-title-element dropdown-element">
-                    <span>
-                      <i className="fas fa-dot-circle" ></i>
-                    </span>
-                    <p>Mostrar</p>
-                  </div>
-                  </Link>
-                  <Link href="/admin/pacientes-atender/agregarPaciente" passHref >
-                  <div className="dropdown-title-element dropdown-element">
-                    <span>
-                      <i className="fas fa-dot-circle" ></i>
-                    </span>
-                    <p>Agregar paciente</p>
-                  </div>
-                  </Link>
-                  </>}
-                </div>
-              </li>
-              <li>
-                <div className="dropdown-block" >
-                  <div onClick={()=>!option.camas ? setOption({...option,camas:true}) : setOption({...option,camas:false})}  className={`dropdown-title-element ${(pathname.split("/").pop()==="camas" || pathname.split("/").pop()==="agregarCama") && "element-active"}`} >
+                  <div onClick={()=>!option.camas ? setOption({...option,camas:true}) : setOption({...option,camas:false})}  className={`dropdown-title-element ${(pathname.split("/").pop()==="camas" ) && "element-active"}`} >
                       <span>
                         <i className="fas fa-procedures" ></i>
                       </span>
@@ -95,7 +64,7 @@ const Sidebar = () => {
                       </span>
                   </div>
                   {option.camas && <>
-                  <Link href="/admin/camas" passHref >
+                  <Link href="/user/camas" passHref >
                   <div className="dropdown-title-element dropdown-element">
                     <span>
                       <i className="fas fa-dot-circle" ></i>
@@ -103,20 +72,13 @@ const Sidebar = () => {
                     <p>Mostrar</p>
                   </div>
                   </Link>
-                  <Link href="/admin/camas/agregarCama" passHref >
-                  <div className="dropdown-title-element dropdown-element">
-                    <span>
-                      <i className="fas fa-dot-circle" ></i>
-                    </span>
-                    <p>Agregar cama</p>
-                  </div>
-                  </Link>
+                  
                   </>}
                 </div>
               </li>
               <li>
                 <div className="dropdown-block" >
-                  <div onClick={()=>!option.medicos ? setOption({...option,medicos:true}) : setOption({...option,medicos:false})}  className={`dropdown-title-element ${(pathname.split("/").pop()==="especialistas" || pathname.split("/").pop()==="agregarDoctor") && "element-active"}`} >
+                  <div onClick={()=>!option.medicos ? setOption({...option,medicos:true}) : setOption({...option,medicos:false})}  className={`dropdown-title-element ${(pathname.split("/").pop()==="medicos" ) && "element-active"}`} >
                       <span>
                         <i className="fas fa-user-md" ></i>
                       </span>
@@ -126,7 +88,7 @@ const Sidebar = () => {
                       </span>
                   </div>
                   {option.medicos && <>
-                  <Link href="/admin/especialistas" passHref >
+                  <Link href="/user/medicos" passHref >
                   <div className="dropdown-title-element dropdown-element">
                     <span>
                       <i className="fas fa-dot-circle" ></i>
@@ -134,50 +96,14 @@ const Sidebar = () => {
                     <p>Mostrar</p>
                   </div>
                   </Link>
-                  <Link href="/admin/especialistas/agregarDoctor" passHref >
-                  <div className="dropdown-title-element dropdown-element">
-                    <span>
-                      <i className="fas fa-dot-circle" ></i>
-                    </span>
-                    <p>Agregar médico</p>
-                  </div>
-                    </Link>
+                 
                   </>}
                 </div>
               </li>
               <li>
-                <div className="dropdown-block" >
-                  <div onClick={()=>!option.usuarios ? setOption({...option,usuarios:true}) : setOption({...option,usuarios:false})}  className={`dropdown-title-element ${(pathname.split("/").pop()==="asegurados" || pathname.split("/").pop()==="agregarUsuario") && "element-active"}`} >
-                      <span>
-                        <i className="fas fa-user" ></i>
-                      </span>
-                      <p>Usuarios</p>
-                      <span className={option.usuarios && `active-icon`} >
-                        <i className="fas fa-sort-down" ></i>
-                      </span>
-                  </div>
-                  {option.usuarios && <>
-                  <Link href="/admin/asegurados" passHref >
-                  <div className="dropdown-title-element dropdown-element">
-                    <span>
-                      <i className="fas fa-dot-circle" ></i>
-                    </span>
-                    <p>Mostrar</p>
-                  </div>
-                  </Link>
-                  <Link href="/admin/asegurados/agregarUsuario" passHref>
-                  <div className="dropdown-title-element dropdown-element">
-                    <span>
-                      <i className="fas fa-dot-circle" ></i>
-                    </span>
-                    <p>Agregar usuario</p>
-                  </div>
-                  </Link>
-                  </>}
-                </div>
-              </li>
+
               <div className="dropdown-block" >
-                  <div onClick={()=>!option.enfermedades ? setOption({...option,enfermedades:true}) : setOption({...option,enfermedades:false})}  className={`dropdown-title-element ${(pathname.split("/").pop()==="enfermedades" || pathname.split("/").pop()==="agregarEnfermedad") && "element-active"}`} >
+                  <div onClick={()=>!option.enfermedades ? setOption({...option,enfermedades:true}) : setOption({...option,enfermedades:false})}  className={`dropdown-title-element ${(pathname.split("/").pop()==="enfermedades" ) && "element-active"}`} >
                       <span>
                         <i className="fas fa-notes-medical" ></i>
                       </span>
@@ -187,7 +113,7 @@ const Sidebar = () => {
                       </span>
                   </div>
                   {option.enfermedades && <>
-                  <Link href="/admin/enfermedades" passHref>
+                  <Link href="/user/enfermedades" passHref>
                   <div className="dropdown-title-element dropdown-element">
                     <span>
                       <i className="fas fa-dot-circle" ></i>
@@ -195,16 +121,10 @@ const Sidebar = () => {
                     <p>Mostrar</p>
                   </div>
                   </Link>
-                  <Link href="/admin/enfermedades/agregarEnfermedad" passHref >
-                  <div className="dropdown-title-element dropdown-element">
-                    <span>
-                      <i className="fas fa-dot-circle" ></i>
-                    </span>
-                    <p>Agregar Enfermedad</p>
-                  </div>
-                  </Link>
+                  
                   </>}
                 </div>
+              </li>
             </ul>
         </div>
       </div>
@@ -343,8 +263,6 @@ const Sidebar = () => {
 }
         `}
       </style>
-    </>
-  );
-};
-
-export default Sidebar;
+      </>
+    )
+}

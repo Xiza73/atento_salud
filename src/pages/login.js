@@ -1,8 +1,6 @@
 import Link from "next/link";
 import Layout from "../components/layout";
-import {signInWithEmailAndPassword,onAuthStateChanged } from "firebase/auth";
 import { useForm } from "../components/hooks/useForm";
-import { auth } from "../../firebase";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -15,22 +13,31 @@ export default function Login(){
     const {push}=useRouter();
     useEffect(()=>{
 
-        onAuthStateChanged(auth,(user)=>{
+       /* onAuthStateChanged(auth,(user)=>{
             if(user){
                 console.log("usuario logeado redirect to /user ");
                 push("/user/main");
             }else{
                 console.log("usuario no logeado");
             }
-        });
+        });*/
     },[]);
     const login=async(e)=>{
         e.preventDefault();
         try{
-            
-            const userCredential=await signInWithEmailAndPassword(auth,form.email,form.password);
-            console.log("credenciales ",userCredential);
-            push("/user/main");
+            const response=await fetch("https://atento-salud.vercel.app/api/auth/login",{
+                method:"POST",
+                body:JSON.stringify(form),
+                headers:{
+                    "Content-Type":"application/json"
+                }
+            });
+            const json=await response.json();
+            console.log("response ",json);
+            if(json.error) return;
+            json.user.role==="admin"?push("/admin"):push("/user/main");
+            /*const userCredential=await signInWithEmailAndPassword(auth,form.email,form.password);
+            console.log("credenciales ",userCredential);*/
 
         }catch(err){
             console.log("Ha ocurrido un error al logearse");
@@ -41,6 +48,9 @@ export default function Login(){
         <Layout>
 
         <section>
+            <div>
+                <img src="https://media.istockphoto.com/vectors/group-of-doctors-standing-at-hospital-building-vector-id1289188556?b=1&k=20&m=1289188556&s=170667a&w=0&h=nKc4n0Z1yk12PY9Ybkwx6jdyQTlwQrDdV2-f-7rb2II=" alt="sistema hospitalario "/>
+            </div>
             <form onSubmit={login} >
                 <article className="block-center" ><h1>Inicio de sesión</h1>
                 
@@ -49,10 +59,18 @@ export default function Login(){
                 </span>
                 </article>
                 
-                <article><input placeholder="Correo electrónico" onChange={handleChange} name="email" value={form.email} type="email"/></article>
-                <article><input placeholder="Contraseña" onChange={handleChange} name="password" value={form.password} type="password"/></article>
+                <article>
+                    <div className="icon-block" >
+                        <i className="fas fa-user" />
+                    </div>
+                    <input placeholder="Correo electrónico" onChange={handleChange} name="email" value={form.email} type="email"/></article>
+                <article>
+                    <div className="icon-block" >
+                        <i className="fas fa-lock" />
+                    </div>
+                    <input placeholder="Contraseña" onChange={handleChange} name="password" value={form.password} type="password"/></article>
                 <article className="block-center" >
-                    <button type="submit" className="btn btn-primary" >Iniciar sesión</button>
+                    <button type="submit"  >Iniciar sesión</button>
                 </article>
                 
                 <article className="block-center" >
@@ -65,6 +83,21 @@ export default function Login(){
             </form>
         </section>
             <style jsx >{`
+            .icon-block{
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                padding: 0 0.5rem;
+                color:rgba(0,0,0,0.5)
+            }
+            button{
+                background-color:#9370DB;
+                border-radius:0.2rem;
+                color:white;
+                width:100%;
+                border:0;
+                padding:0.5rem 0;
+            }
             a{
                 text-decoration:none;
             }
@@ -91,13 +124,19 @@ export default function Login(){
             flex-direction:column;
         }
         input{
-            border: 1px  solid black;
+            border: 1px  solid rgba(0,0,0,0.2);
             border-width: 0 0 1px 0;
             width:100%;
             outline:0;
+            transition: all 0.3s ease;
+        }
+        input:focus{
+            border: 1px solid black;
+            border-width: 0 0 1px 0;
         }
         article{
             padding:0.5rem 0;
+            margin: 0.5rem 0;
             display:flex;
         }
         h1{
@@ -106,7 +145,7 @@ export default function Login(){
         section{
             min-height:100vh;
             display:flex;
-            justify-content:center;
+            justify-content:space-around;
             align-items:center;
         }
             `}</style>

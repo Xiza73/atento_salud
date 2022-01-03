@@ -1,13 +1,14 @@
 import Adminside from "../../../components/AdminSide";
+import LayoutAdmin from "../../../components/layout/LayoutAdmin";
 
-export default function Asegurados() {
+export default function Asegurados({users}) {
   return (
-    <>
-      <div className="admin-content">
-        <Adminside></Adminside>
+    <LayoutAdmin>
+      <section>
+
         <div className="admin-main">
           <div className="d-flex w-100 flex-column justify-content-center align-items-center">
-            <h1 className="mb-3">Asegurados</h1>
+            <h1 className="mb-3">Usuarios</h1>
             <div className="input-group px-5 mb-5">
               <input
                 type="text"
@@ -24,38 +25,55 @@ export default function Asegurados() {
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Código</th>
-                  <th scope="col">Detalles</th>
-                  <th scope="col">Enfermedad</th>
+                  <th scope="col">Nombres</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">DNI</th>
+                  <th scope="col">Rol</th>
                   <th scope="col">Teléfono</th>
                   <th scope="col">Dirección</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">0001</th>
-                  <td>Rosa Pilar</td>
-                  <td>SIH_1065465</td>
-                  <td>Ver detalles</td>
-                  <td>Enfermedad_01</td>
-                  <td>999 999 999</td>
-                  <td>Ver dirección</td>
-                </tr>
-                <tr>
-                  <th scope="row">0001</th>
-                  <td>Juan Gómez</td>
-                  <td>SIH_1065465</td>
-                  <td>Ver detalles</td>
-                  <td>Enfermedad_02</td>
-                  <td>999 999 999</td>
-                  <td>Ver dirección</td>
-                </tr>
+                {users.map((user,index)=>(
+                  <tr key={user._id} >
+                      <th scope="row">{index+1}</th>
+                      <td>{user.nombres} {user.apellidos}</td>
+                      <td>{user.email}</td>
+                      <td>{user.dni}</td>
+                      <td>{user.role}</td>
+                      <td>{user.phone}</td>
+                      <td>{user.address}</td>
+                  </tr>
+                ))}
+                
               </tbody>
             </table>
           </div>
         </div>
-      </div>
-    </>
+      </section>
+        <style jsx>{`
+        section{
+          padding:1rem;
+        }
+        `}</style>
+    </LayoutAdmin>
   );
+}
+export async function getServerSideProps(){
+  try{
+    const response=await fetch("https://atento-salud.vercel.app/api/user");
+    const users=await response.json();
+    return{
+      props:{
+        users
+      }
+    }
+  }catch(err){
+    return{
+      props:{
+        message:"Ha ocurrido un error en el SSR",
+        error:err
+      }
+    }
+  }
 }

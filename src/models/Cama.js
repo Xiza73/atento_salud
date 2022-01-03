@@ -1,4 +1,5 @@
 const mongoose=require("mongoose");
+const {ObjectId}=mongoose.Schema;
 const camaSchema= new mongoose.Schema({
     codeCama:{
         type:String,
@@ -11,11 +12,11 @@ const camaSchema= new mongoose.Schema({
         default:false
     },
     nombrePaciente:{
-        type:String,
-        trim:true
+        type:ObjectId,
+        ref:"PacienteMdModel"
     }
 },{
     timestamps:true,
     versionKey:false
 });
-module.exports=mongoose.models.CamaModel || mongoose.model("CamaModel",camaSchema);
+module.exports=mongoose.models.CamaFinalModel || mongoose.model("CamaFinalModel",camaSchema);

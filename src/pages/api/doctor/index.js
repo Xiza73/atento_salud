@@ -1,6 +1,6 @@
-const DoctorModel=require("../../../models/Doctor");
 import dbConnect from "../../../utils/dbConnect";
 dbConnect();
+const DoctorModel=require("../../../models/Doctor");
 export default async function handler(req,res){
     try{
         const response=await DoctorModel.find();

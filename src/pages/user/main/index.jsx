@@ -2,24 +2,16 @@ import { onAuthStateChanged } from "@firebase/auth";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { auth } from "../../../../firebase";
+import LayoutUser from "../../../components/layout/LayoutUser";
 import Sidebar from "../../../components/SideBar";
 
 export default function Main() {
-  const {push}=useRouter();
-  useEffect(()=>{
-    onAuthStateChanged(auth,(user)=>{
-      if(user){
-        console.log("usuario logeado");
-      }else{
-        console.log("usuario no logeado ");
-        push("/login");
-      }
-    })
-  })
+  const {pathname,push}=useRouter();
+  
   return (
-    <>
-      <div className="user-content">
-        <Sidebar></Sidebar>
+    <LayoutUser>
+        <section>
+
         <div className="user-main">
           <div className="main-content d-flex flex-column justify-content-center align-items-center">
             <h1 className="mb-5">Sistema hospitalario</h1>
@@ -42,10 +34,12 @@ export default function Main() {
             </div>
           </div>
         </div>
-      </div>
-
+        </section>
       <style jsx>
         {`
+        section{
+          padding:1rem;
+        }
           .img {
             background-image: url("https://emojigraph.org/media/facebook/stethoscope_1fa7a.png");
             background-repeat: no-repeat;
@@ -56,6 +50,6 @@ export default function Main() {
           }
         `}
       </style>
-    </>
+    </LayoutUser>
   );
 }

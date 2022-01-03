@@ -1,12 +1,9 @@
-import Adminside from "../../../components/AdminSide";
-import LayoutAdmin from "../../../components/layout/LayoutAdmin";
+import LayoutUser from "../../../components/layout/LayoutUser";
 
-export default function Enfermedades({enfermedades}) {
-  return (
-    <LayoutAdmin>
-      <section>
-
-        <div className="admin-main">
+export default function Enfermedades({enfermedades}){
+    return(
+        <LayoutUser>
+            <div className="admin-main">
           <div className="d-flex w-100 flex-column justify-content-center align-items-center">
             <h1 className="mb-3">Enfermedades a atender</h1>
             <div className="input-group px-5 mb-5">
@@ -27,7 +24,6 @@ export default function Enfermedades({enfermedades}) {
                   <th scope="col">#</th>
                   <th scope="col">Nombre de enfermedad</th>
                   <th scope="col">Código de enfermedad</th>
-                  <th scope="col">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -36,10 +32,6 @@ export default function Enfermedades({enfermedades}) {
                   <th scope="row" >{index+1}</th>
                   <td>{enfermedad.nombreEnfermedad}</td>
                   <td>{enfermedad.codeEnfermedad}</td>
-                  <td>
-                    <button><i className="fas fa-edit" ></i></button>
-                    <button><i className="fas fa-trash-alt"></i></button>
-                  </td>
                   
                 </tr>
               ))}
@@ -48,23 +40,16 @@ export default function Enfermedades({enfermedades}) {
             </table>
           </div>
         </div>
-      </section>
-      <style jsx>{`
-      td>button{
-        background-color:transparent;
-        color:white;
-        border:0;
-      }
-      section{
-        padding:1rem;
-      }
-      `}</style>
-    </LayoutAdmin>
-      
-  );
+            <style jsx>{`
+            .admin-main{
+                padding:1rem;
+            }
+            `}</style>
+        </LayoutUser>
+    )
 }
 export async function getServerSideProps(){
-  try{
+    try{
     const response=await fetch("https://atento-salud.vercel.app/api/enfermedad");
     const enfermedades=await response.json();
     return{

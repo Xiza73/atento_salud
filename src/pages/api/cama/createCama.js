@@ -1,10 +1,10 @@
-const CamaModel=require("../../../models/Cama");
 import dbConnect from "../../../utils/dbConnect";
 dbConnect();
+const CamaFinalModel=require("../../../models/Cama");
 export default async function handler(req,res){
     try{
-        const {codeCama,estadoCama,nombrePaciente=""}=req.body;
-        const cama=new CamaModel(nombrePaciente===""?{codeCama,estadoCama}:{codeCama,estadoCama,nombrePaciente});
+        const {codeCama,estadoCama,nombrePaciente}=req.body;
+        const cama=new CamaFinalModel({codeCama,estadoCama,nombrePaciente});
         cama.save();
         res.send(
             {
